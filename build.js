@@ -1,0 +1,151 @@
+#!/usr/bin/env node
+/**
+ * build.js — Convierte todos los .md en articles/ a HTML en posts/
+ * y actualiza el índice en index.html
+ *
+ * Uso:
+ *   node build.js              → convierte todos los artículos
+ *   node build.js watch        → modo observador (re-compila al guardar)
+ *
+ * Requiere: npm install marked gray-matter
+ */
+
+const fs   = require('fs');
+const path = require('path');
+
+// ── Intenta cargar dependencias ────────────────────────────────
+let marked, grayMatter;
+try {
+  marked     = require('marked').marked;
+  grayMatter = require('gray-matter');
+} catch {
+  console.error('\n  ❌  Dependencias no instaladas. Ejecuta:\n');
+  console.error('     npm install marked gray-matter\n');
+  process.exit(1);
+}
+
+// ── Configuración ──────────────────────────────────────────────
+const ARTICLES_DIR = path.join(__dirname, 'articles');
+const POSTS_DIR    = path.join(__dirname, 'posts');
+const TEMPLATE     = path.join(__dirname, 'posts', '_template.html');
+const INDEX        = path.join(__dirname, 'index.html');
+
+// ── Helpers ────────────────────────────────────────────────────
+function readingTime(text) {
+  const words = text.trim().split(/\s+/).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+function slugify(name) {
+  return path.basename(name, '.md');
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  const date = new Date(d);
+  return date.toISOString().split('T')[0];
+}
+
+// ── Compilar un archivo .md ────────────────────────────────────
+function buildArticle(mdFile) {
+  const src      = path.join(ARTICLES_DIR, mdFile);
+  const slug     = slugify(mdFile);
+  const destFile = slug + '.html';
+  const dest     = path.join(POSTS_DIR, destFile);
+
+  const raw      = fs.readFileSync(src, 'utf8');
+  const { data, content } = grayMatter(raw);
+
+  const title    = data.title    || slug;
+  const date     = formatDate(data.date) || '';
+  const tags     = (data.tags    || []).join(', ');
+  const subtitle = data.subtitle || '';
+  const minRead  = readingTime(content);
+  const bodyHtml = marked(content);
+
+  let tmpl = fs.readFileSync(TEMPLATE, 'utf8');
+
+  tmpl = tmpl
+    .replace(/TITULO_ARTICULO/g,    title)
+    .replace(/DESCRIPCION_ARTICULO/g, subtitle || title)
+    .replace(/FECHA_ARTICULO/g,     date)
+    .replace(/TIEMPO_LECTURA/g,     minRead)
+    .replace(/TAGS_ARTICULO/g,      tags)
+    .replace(/SUBTITULO_ARTICULO/g, subtitle)
+    .replace('<!-- CONTENIDO_HTML -->', bodyHtml);
+
+  fs.writeFileSync(dest, tmpl, 'utf8');
+  console.log(`  ✓  posts/${destFile}`);
+
+  return { slug, title, date, tags: data.tags || [] };
+}
+
+// ── Actualizar el índice con todos los artículos ───────────────
+function updateIndex(articles) {
+  let html = fs.readFileSync(INDEX, 'utf8');
+
+  // Ordena por fecha (más reciente primero)
+  articles.sort((a, b) => (b.date > a.date ? 1 : -1));
+
+  const listHtml = articles.map(a => {
+    const tagsHtml = a.tags
+      .map(t => `<span class="tag">${t}</span>`)
+      .join('\n            ');
+    return `
+        <li class="post-item">
+          <span class="post-date">${a.date}</span>
+          <a class="post-title-link" href="posts/${a.slug}.html">${a.title}</a>
+          <div class="post-tags">
+            ${tagsHtml}
+          </div>
+        </li>`;
+  }).join('\n');
+
+  // Reemplaza el contenido entre los comentarios marcados
+  html = html.replace(
+    /(<ul class="post-list"[^>]*>)([\s\S]*?)(<\/ul>)/,
+    `$1\n${listHtml}\n      $3`
+  );
+
+  fs.writeFileSync(INDEX, html, 'utf8');
+  console.log('  ✓  index.html actualizado');
+}
+
+// ── Build principal ────────────────────────────────────────────
+function build() {
+  console.log('\n🔨 Compilando artículos...\n');
+
+  if (!fs.existsSync(POSTS_DIR)) fs.mkdirSync(POSTS_DIR, { recursive: true });
+
+  const mdFiles = fs.readdirSync(ARTICLES_DIR)
+    .filter(f => f.endsWith('.md'));
+
+  if (mdFiles.length === 0) {
+    console.log('  (ningún artículo encontrado en articles/)');
+    return;
+  }
+
+  const articles = mdFiles.map(buildArticle);
+  updateIndex(articles);
+
+  console.log(`\n✅ Listo — ${articles.length} artículo(s) compilado(s)\n`);
+}
+
+// ── Modo watch ─────────────────────────────────────────────────
+function watch() {
+  build();
+  console.log('👁  Observando cambios en articles/ ...\n');
+  fs.watch(ARTICLES_DIR, (event, filename) => {
+    if (filename && filename.endsWith('.md')) {
+      console.log(`↻  ${filename} cambió — recompilando...`);
+      try { build(); } catch (e) { console.error(e.message); }
+    }
+  });
+}
+
+// ── Entry point ────────────────────────────────────────────────
+if (process.argv[2] === 'watch') {
+  watch();
+} else {
+  build();
+}
