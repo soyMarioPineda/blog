@@ -63,4 +63,4 @@ Lo que hoy puedes materializar — tus metas, tu forma de pensar, tu capacidad d
 
 ---
 
-*La próxima vez que te preguntes si podrías haber llegado antes: quizás sí, a algún lugar. Pero no a este.*
+*La próxima vez que te preguntes si podrías haber llegado antes: quizás sí, a algún lugar. Pero no a este.
