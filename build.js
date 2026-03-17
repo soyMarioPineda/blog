@@ -120,6 +120,7 @@ function buildArticle(mdFile) {
 
 tmpl = tmpl
     .replace(/SUBTITULO_ARTICULO/g,   subtitle)
+    .replace(/DESCRIPCION_ARTICULO/g, subtitle) // para meta description
     .replace(/TITULO_ARTICULO/g,      title)
     .replace(/FECHA_ARTICULO/g,       date)
     .replace(/TIEMPO_LECTURA/g,       minRead)
