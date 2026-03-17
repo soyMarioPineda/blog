@@ -46,6 +46,58 @@ function formatDate(d) {
   return date.toISOString().split('T')[0];
 }
 
+// ── Genera un slug limpio para IDs de heading ─────────────────
+function headingSlug(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita tildes
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
+// ── Genera el HTML del índice a partir del contenido .md ───────
+function buildTOC(content) {
+  const headings = [];
+  const lines = content.split('\n');
+
+  for (const line of lines) {
+    const h2 = line.match(/^##\s+(.+)/);
+    const h3 = line.match(/^###\s+(.+)/);
+    if (h2) headings.push({ level: 2, text: h2[1].trim() });
+    else if (h3) headings.push({ level: 3, text: h3[1].trim() });
+  }
+
+  if (headings.length === 0) return '';
+
+  const items = headings.map(h => {
+    const id = headingSlug(h.text);
+    const indent = h.level === 3 ? ' style="padding-left:1rem;color:var(--text-dim)"' : '';
+    return `<li${indent}><a href="#${id}">${h.text}</a></li>`;
+  }).join('\n      ');
+
+  return `
+<nav class="toc">
+  <p class="toc-label">// índice</p>
+  <ul>
+      ${items}
+  </ul>
+</nav>`;
+}
+
+// ── Inyecta IDs en los headings del HTML generado ─────────────
+function injectHeadingIds(html) {
+  return html
+    .replace(/<h2>(.*?)<\/h2>/g, (_, text) => {
+      const id = headingSlug(text.replace(/<[^>]+>/g, ''));
+      return `<h2 id="${id}">${text}</h2>`;
+    })
+    .replace(/<h3>(.*?)<\/h3>/g, (_, text) => {
+      const id = headingSlug(text.replace(/<[^>]+>/g, ''));
+      return `<h3 id="${id}">${text}</h3>`;
+    });
+}
+
 // ── Compilar un archivo .md ────────────────────────────────────
 function buildArticle(mdFile) {
   const src      = path.join(ARTICLES_DIR, mdFile);
@@ -61,7 +113,8 @@ function buildArticle(mdFile) {
   const tags     = (data.tags    || []).join(', ');
   const subtitle = data.subtitle || '';
   const minRead  = readingTime(content);
-  const bodyHtml = marked(content);
+  const bodyHtml = injectHeadingIds(marked(content));
+  const tocHtml  = buildTOC(content);
 
   let tmpl = fs.readFileSync(TEMPLATE, 'utf8');
 
@@ -72,6 +125,7 @@ function buildArticle(mdFile) {
     .replace(/TIEMPO_LECTURA/g,     minRead)
     .replace(/TAGS_ARTICULO/g,      tags)
     .replace(/SUBTITULO_ARTICULO/g, subtitle)
+    .replace('<!-- TOC_HTML -->', tocHtml)
     .replace('<!-- CONTENIDO_HTML -->', bodyHtml);
 
   fs.writeFileSync(dest, tmpl, 'utf8');
