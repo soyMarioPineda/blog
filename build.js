@@ -118,14 +118,14 @@ function buildArticle(mdFile) {
 
   let tmpl = fs.readFileSync(TEMPLATE, 'utf8');
 
-  tmpl = tmpl
-    .replace(/TITULO_ARTICULO/g,    title)
+tmpl = tmpl
+    .replace(/SUBTITULO_ARTICULO/g,   subtitle)
     .replace(/DESCRIPCION_ARTICULO/g, subtitle || title)
-    .replace(/FECHA_ARTICULO/g,     date)
-    .replace(/TIEMPO_LECTURA/g,     minRead)
-    .replace(/TAGS_ARTICULO/g,      tags)
-    .replace(/SUBTITULO_ARTICULO/g, subtitle)
-    .replace('<!-- TOC_HTML -->', tocHtml)
+    .replace(/TITULO_ARTICULO/g,      title)
+    .replace(/FECHA_ARTICULO/g,       date)
+    .replace(/TIEMPO_LECTURA/g,       minRead)
+    .replace(/TAGS_ARTICULO/g,        tags)
+    .replace('<!-- TOC_HTML -->',     tocHtml)
     .replace('<!-- CONTENIDO_HTML -->', bodyHtml);
 
   fs.writeFileSync(dest, tmpl, 'utf8');
