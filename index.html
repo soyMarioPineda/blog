@@ -9,15 +9,20 @@
 </head>
 <body>
 
-  <header>
-    <div class="header-inner">
-      <a class="site-name" href="index.html">blogdoblep</a>
-      <nav>
-        <a href="index.html" class="active">escritos</a>
-        <a href="about.html">sobre mí</a>
-      </nav>
-    </div>
-  </header>
+<header>
+  <div class="header-inner">
+    <a class="site-name" href="index.html">blogdoblep</a>
+    <nav>
+      <a href="index.html" class="active">escritos</a>
+      <a href="about.html">sobre mí</a>
+    </nav>
+    <button class="light-mode-btn" onclick="intentarModoClaro()">☀ modo claro</button>
+  </div>
+</header>
+
+<div class="hell-overlay" id="hellOverlay">
+  <div class="hell-text" id="hellText">NO.</div>
+</div>
 
   <main class="container">
 
@@ -34,20 +39,10 @@
       <ul class="post-list" id="post-list">
 
         <li class="post-item">
-          <span class="post-date">2025-04-19</span>
+          <span class="post-date">2025-04-20</span>
           <a class="post-title-link" href="posts/notaspic.html">Notas Assembly PIC18F4455</a>
           <div class="post-tags">
             <span class="tag">Programación</span>
-          </div>
-        </li>
-
-        <li class="post-item">
-          <span class="post-date">2025-03-17</span>
-          <a class="post-title-link" href="posts/prueba.html">El trazo que no se puede saltar</a>
-          <div class="post-tags">
-            <span class="tag">filosofía</span>
-            <span class="tag">decisiones</span>
-            <span class="tag">experiencia</span>
           </div>
         </li>
       </ul>
@@ -64,6 +59,49 @@
       </div>
     </div>
   </footer>
+
+    <script>
+    function intentarModoClaro() {
+      const overlay = document.getElementById('hellOverlay');
+      const text = document.getElementById('hellText');
+      const body = document.body;
+
+      const mensajes = [
+        'NO.',
+        'JAMÁS.',
+        '¿QUÉ TE PASA?',
+        'ESTO ES UN BLOG DARK.',
+        'EL MODO CLARO NO EXISTE AQUÍ.',
+        'VETE.',
+        'NO.',
+      ];
+
+      let i = 0;
+      overlay.classList.add('active');
+      body.classList.add('falling');
+
+      const intervalo = setInterval(() => {
+        text.classList.add('cambio');
+        setTimeout(() => {
+          text.textContent = mensajes[i % mensajes.length];
+          text.classList.remove('cambio');
+          i++;
+        }, 150);
+      }, 500);
+
+      setTimeout(() => {
+        clearInterval(intervalo);
+        overlay.classList.add('saliendo');
+        body.classList.remove('falling');
+        body.classList.add('returning');
+        setTimeout(() => {
+          overlay.classList.remove('active', 'saliendo');
+          body.classList.remove('returning');
+          text.textContent = 'NO.';
+        }, 800);
+      }, 4000);
+    }
+    </script>
 
 </body>
 </html>
