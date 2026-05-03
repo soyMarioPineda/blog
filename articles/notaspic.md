@@ -2,7 +2,7 @@
 title: Notas Assembly PIC18F4455
 date: 2025-04-20
 tags: [Programación]
-subtitle: Notas Assembly PIC18F4455
+description: "Estos son algunos de mis apuntes de ensamblador para pic18f4455: desde una noción hasta ejemplos basicos"
 ---
 
 > 

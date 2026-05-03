@@ -108,30 +108,32 @@ function buildArticle(mdFile) {
   const raw      = fs.readFileSync(src, 'utf8');
   const { data, content } = grayMatter(raw);
 
-  const title    = data.title    || slug;
-  const date     = formatDate(data.date) || '';
-  const tags     = (data.tags    || []).join(', ');
-  const subtitle = data.subtitle || '';
-  const minRead  = readingTime(content);
-  const bodyHtml = injectHeadingIds(marked(content));
-  const tocHtml  = buildTOC(content);
+  const title       = data.title       || slug;
+  const date        = formatDate(data.date) || '';
+  const tags        = (data.tags       || []).join(', ');
+  const subtitle    = data.subtitle    || '';
+  const description = data.description || subtitle;
+  const minRead     = readingTime(content);
+  const bodyHtml    = injectHeadingIds(marked(content));
+  const tocHtml     = buildTOC(content);
 
   let tmpl = fs.readFileSync(TEMPLATE, 'utf8');
 
-tmpl = tmpl
-    .replace(/SUBTITULO_ARTICULO/g,   subtitle)
-    .replace(/DESCRIPCION_ARTICULO/g, subtitle) // para meta description
-    .replace(/TITULO_ARTICULO/g,      title)
-    .replace(/FECHA_ARTICULO/g,       date)
-    .replace(/TIEMPO_LECTURA/g,       minRead)
-    .replace(/TAGS_ARTICULO/g,        tags)
-    .replace('<!-- TOC_HTML -->',     tocHtml)
+  tmpl = tmpl
+    .replace(/SUBTITULO_ARTICULO/g,    subtitle)
+    .replace(/DESCRIPCION_ARTICULO/g,  description)
+    .replace(/TITULO_ARTICULO/g,       title)
+    .replace(/FECHA_ARTICULO/g,        date)
+    .replace(/TIEMPO_LECTURA/g,        minRead)
+    .replace(/TAGS_ARTICULO/g,         tags)
+    .replace('<!-- TOC_HTML -->',      tocHtml)
     .replace('<!-- CONTENIDO_HTML -->', bodyHtml);
 
   fs.writeFileSync(dest, tmpl, 'utf8');
   console.log(`  ✓  posts/${destFile}`);
 
-  return { slug, title, date, tags: data.tags || [] };
+  // ── FIX: se retorna description para que updateIndex lo use ──
+  return { slug, title, date, tags: data.tags || [], description };
 }
 
 // ── Actualizar el índice con todos los artículos ───────────────
@@ -145,10 +147,16 @@ function updateIndex(articles) {
     const tagsHtml = a.tags
       .map(t => `<span class="tag">${t}</span>`)
       .join('\n            ');
+
+    // ── FIX: se renderiza la descripción si existe ────────────
+    const descHtml = a.description
+      ? `\n          <p class="post-description">${a.description}</p>`
+      : '';
+
     return `
         <li class="post-item">
           <span class="post-date">${a.date}</span>
-          <a class="post-title-link" href="posts/${a.slug}.html">${a.title}</a>
+          <a class="post-title-link" href="posts/${a.slug}.html">${a.title}</a>${descHtml}
           <div class="post-tags">
             ${tagsHtml}
           </div>
