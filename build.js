@@ -78,7 +78,6 @@ function buildTOC(content) {
 
 return `
 <nav class="toc">
-  <button class="toc-back" onclick="document.querySelector('.toc-wrapper').classList.remove('toc-open')">cerrar</button>
   <p class="toc-label">// índice</p>
   <ul>
       ${items}
