@@ -63,5 +63,33 @@
     </div>
   </footer>
 
+  <script>
+  const tocWrapper = document.querySelector('.toc-wrapper');
+  const toc = document.querySelector('.toc');
+
+  if (tocWrapper && toc) {
+    // Click en el trigger abre/cierra
+    tocWrapper.addEventListener('click', (e) => {
+      const isOpen = tocWrapper.classList.contains('toc-open');
+      if (isOpen) {
+        tocWrapper.classList.remove('toc-open');
+      } else {
+        tocWrapper.classList.add('toc-open');
+        e.stopPropagation();
+      }
+    });
+
+    // Click dentro del TOC no lo cierra (para poder navegar)
+    toc.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    // Click fuera lo cierra
+    document.addEventListener('click', () => {
+      tocWrapper.classList.remove('toc-open');
+    });
+  }
+</script>
+
 </body>
 </html>

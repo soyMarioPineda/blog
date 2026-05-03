@@ -311,9 +311,15 @@ nav a.active { color: var(--accent); border-bottom-color: var(--accent-dim); }
   background: rgba(255, 255, 255, 0.9);
 }
 
-.toc-wrapper:hover .toc-trigger {
+.toc-wrapper.toc-open .toc-trigger {
   opacity: 0;
   pointer-events: none;
+}
+
+.toc-wrapper.toc-open .toc {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
 }
 
 .toc {
