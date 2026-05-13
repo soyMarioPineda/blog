@@ -828,3 +828,22 @@ body.returning {
   color: #7CFFB2;
   margin-right: 0.45rem;
 }
+
+/* ─── Featured Post ───────────────────────────── */
+
+.featured-post {
+  color: #7CFFB2 !important;
+  border-bottom: none;
+}
+
+.featured-post:hover {
+  color: #a8ffd0 !important;
+}
+
+.featured-post .gold-word {
+  color: inherit;
+}
+
+.featured-post .featured-star {
+  color: inherit;
+}
