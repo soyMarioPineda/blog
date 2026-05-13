@@ -5,7 +5,7 @@
 
 :root {
   /* ── Base: negro morado profundo ── */
-  --bg:          #030004;   /* fondo base — negro berengena */
+  --bg:          #000000;   /* fondo base — negro berengena */
   --bg-surface:  #110818;   /* superficies elevadas — TOC, tarjetas */
   --bg-code:     #1a0f22;   /* bloques de código — un tono más claro */
   --border:      #2d1f38;   /* bordes visibles */
@@ -28,7 +28,7 @@
   --max-w-wide:  900px;
 }
 
-html { font-size: 16px; scroll-behavior: smooth; }
+html { font-size: 17px; scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
@@ -795,4 +795,23 @@ body.returning {
   .toc a {
     white-space: normal;
   }
+}
+
+
+
+.gold-word {
+  color: #00ff99;
+
+  text-shadow:
+    0 0 8px rgba(0, 255, 153, 0.35),
+    0 0 18px rgba(0, 255, 153, 0.15);
+}
+
+.featured-star {
+  color: #00ff99;
+
+  margin-right: 0.45rem;
+
+  text-shadow:
+    0 0 8px rgba(0, 255, 153, 0.5);
 }
