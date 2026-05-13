@@ -815,3 +815,16 @@ body.returning {
   text-shadow:
     0 0 8px rgba(0, 255, 153, 0.5);
 }
+
+.gold-word {
+  color: #7CFFB2;
+
+  text-shadow:
+    0 0 10px rgba(124, 255, 178, 0.35),
+    0 0 24px rgba(124, 255, 178, 0.15);
+}
+
+.featured-star {
+  color: #7CFFB2;
+  margin-right: 0.45rem;
+}
