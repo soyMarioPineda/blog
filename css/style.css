@@ -28,7 +28,7 @@
   --max-w-wide:  900px;
 }
 
-html { font-size: 17px; scroll-behavior: smooth; }
+html { font-size: 18px; scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
@@ -815,3 +815,15 @@ body.returning {
   text-shadow:
     0 0 8px rgba(0, 255, 153, 0.5);
 }
+
+
+.post-title-link-gold {
+  color: #7CFFB2;
+
+  text-shadow:
+    0 0 10px rgba(124, 255, 178, 0.35),
+    0 0 24px rgba(124, 255, 178, 0.15);
+     border-bottom: none;
+}
+
+.post-title-link-gold:hover { color: var(--accent); }

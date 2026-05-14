@@ -1,13 +1,14 @@
 ---
-title: Boonche 
+title: "Boonche: una plataforma para aprender idiomas"
 date: 2026-04-29
-tags: [boonche]
+tags: [Boonche]
 description: "Una plataforma para aprender idiomas"
 ---
+![Imagen](boonche_image1.png)
 
 *Disponible en :* [https://www.boonche.com](https://www.boonche.com/)
 
-![Imagen](boonche_image1.png)
+
 
 ### **I. El problema**
 
@@ -119,3 +120,4 @@ El desarrollo sigue una lógica deliberada: primero consolidar el núcleo, despu
 No se requiere más herramientas. Requiere que las herramientas correctas estén conectadas dentro de un mismo lugar, organizadas alrededor de un flujo que lleve al usuario del estudio al uso de manera natural y sostenida.
 
 Eso es lo que Boonche hace.
+
