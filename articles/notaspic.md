@@ -7,12 +7,8 @@ description: "Estos son algunos de mis apuntes de ensamblador para pic18f4455: d
 
 > 
 > 
-> 
+>
 > ***Nota del autor:***
-> 
-> *Estos apuntes estaban tranquilamente en mi Notion, sin embargo algo me decía que los tenia que compartir, por que así soy yo, a toda madre y tambien porque me hubiera gustado encontrar un recurso como esté hace un tiempo.*
-> 
-> ***bueno ya, serios.***
 > 
 > ***Este documento no pretende sustituir, reemplazar ni competir con la labor de un docente, cuya guía es fundamental e insustituible en el proceso de aprendizaje. La información aquí contenida no debe tomarse como referencia bibliográfica oficial, ni como material de estudio único o definitivo.***
 > 
@@ -45,7 +41,7 @@ Cualquier duda técnica que surja durante el desarrollo con este microcontrolado
 
 # Capitulo 1: Noción
 
-## 1.1 Introducción
+## 1.0 Introducción
 
 Antes de escribir una sola instrucción en ensamblador, es necesario entender qué hay dentro del microcontrolador y cómo se relaciona. Este capítulo no pretende ser una referencia técnica exhaustiva (tengan a la mano el datasheet) sino una lectura que los guiará en la forma de pensar desde un inicio, y que despues, cuando programen, formular la solución les resultará mas facil.
 
