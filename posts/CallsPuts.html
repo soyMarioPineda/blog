@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CallsPuts — Mi Blog</title>
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+  <header>
+    <div class="header-inner">
+      <a class="site-name" href="../index.html" blogdoblep</a>
+      <nav>
+        <a href="../index.html">escritos</a>
+        <a href="../about.html">sobre mí</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <article>
+      <header class="article-header">
+        <div class="article-meta">
+          <span></span>
+          <span class="sep">·</span>
+          <span>1 min de lectura</span>
+          <span class="sep">·</span>
+          <span></span>
+        </div>
+        <h1 class="article-title">CallsPuts</h1>
+        <p class="article-subtitle"></p>
+      </header>
+
+      <div class="toc-wrapper">
+        <div class="toc-trigger">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+        
+      </div>
+
+      <div class="article-body">
+        
+      </div>
+    </article>
+
+    <nav style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-soft); display: flex; justify-content: space-between; font-size: 0.75rem;">
+      <a href="../index.html">← todos los artículos</a>
+    </nav>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">// todos los textos son míos</span>
+      <div class="footer-links">
+        <a href="https://github.com/soyMarioPineda" target="_blank">github</a>
+        <a href="mailto:marioppineda.2901@gmail.com">email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  const tocWrapper = document.querySelector('.toc-wrapper');
+  const toc = document.querySelector('.toc');
+
+  if (tocWrapper && toc) {
+    // Click en el trigger abre/cierra
+    tocWrapper.addEventListener('click', (e) => {
+      const isOpen = tocWrapper.classList.contains('toc-open');
+      if (isOpen) {
+        tocWrapper.classList.remove('toc-open');
+      } else {
+        tocWrapper.classList.add('toc-open');
+        e.stopPropagation();
+      }
+    });
+
+    // Click dentro del TOC no lo cierra (para poder navegar)
+    toc.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    // Click fuera lo cierra
+    document.addEventListener('click', () => {
+      tocWrapper.classList.remove('toc-open');
+    });
+  }
+</script>
+
+</body>
+</html>
